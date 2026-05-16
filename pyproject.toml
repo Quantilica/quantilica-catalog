@@ -1,0 +1,64 @@
+[project]
+name = "quantilica-catalog"
+version = "0.1.0"
+description = "Unified data catalog and canonical observation model for Quantilica"
+readme = "README.md"
+authors = [
+    { name = "Komesu, D.K.", email = "daniel@dkko.me" },
+]
+license = { file = "LICENSE" }
+requires-python = ">=3.12"
+keywords = [
+    "data",
+    "open-data",
+    "brazil",
+    "quantilica",
+    "catalog",
+    "data-model",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = [
+    "polars>=1.0.0",
+    "quantilica-io @ git+https://github.com/Quantilica/quantilica-io.git",
+]
+
+[project.urls]
+Homepage = "https://github.com/Quantilica/quantilica-catalog"
+Repository = "https://github.com/Quantilica/quantilica-catalog"
+Issues = "https://github.com/Quantilica/quantilica-catalog/issues"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.9.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+exclude = [".uv-cache", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-p", "no:cacheprovider"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
