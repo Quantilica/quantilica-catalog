@@ -7,7 +7,7 @@ from dataclasses import dataclass
 import polars as pl
 from quantilica_io.schema import DataContract, Field
 
-from ..enums import DataCategory, Frequency, GeoLevel
+from ..enums import DataCategory, Frequency
 
 INDICATOR_CONTRACT = DataContract(
     dataset_id="catalog-dim-indicator",
@@ -38,7 +38,7 @@ class IndicatorEntry:
     subcategory: str | None = None
     unit: str | None = None
     frequency: Frequency | None = None
-    geo_level: GeoLevel | None = None
+    geo_level: str | None = None
     description: str | None = None
 
     def to_dict(self) -> dict:
@@ -53,9 +53,7 @@ class IndicatorEntry:
             "frequency": (
                 self.frequency.value if self.frequency else None
             ),
-            "geo_level": (
-                self.geo_level.value if self.geo_level else None
-            ),
+            "geo_level": self.geo_level,
             "description": self.description,
         }
 

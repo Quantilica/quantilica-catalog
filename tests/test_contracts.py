@@ -6,12 +6,10 @@ import polars as pl
 import pytest
 
 from quantilica_catalog import (
-    GEOGRAPHY_CONTRACT,
     INDICATOR_CONTRACT,
     OBSERVATION_CONTRACT,
     DataCategory,
     Frequency,
-    GeoLevel,
     IndicatorEntry,
     entries_to_frame,
 )
@@ -94,33 +92,6 @@ def test_indicator_contract_valid():
     INDICATOR_CONTRACT.validate(df)
 
 
-def test_geography_contract_valid():
-    df = pl.DataFrame(
-        {
-            "geo_id": ["BR:SP"],
-            "geo_level": ["state"],
-            "name": ["São Paulo"],
-            "ibge_code": ["35"],
-            "uf": ["SP"],
-            "region": ["Sudeste"],
-            "parent_geo_id": ["BR:R:3"],
-            "latitude": [None],
-            "longitude": [None],
-        },
-        schema={
-            "geo_id": pl.Utf8,
-            "geo_level": pl.Utf8,
-            "name": pl.Utf8,
-            "ibge_code": pl.Utf8,
-            "uf": pl.Utf8,
-            "region": pl.Utf8,
-            "parent_geo_id": pl.Utf8,
-            "latitude": pl.Float64,
-            "longitude": pl.Float64,
-        },
-    )
-    GEOGRAPHY_CONTRACT.validate(df)
-
 
 def test_entries_to_frame_roundtrip():
     entry = IndicatorEntry(
@@ -131,7 +102,7 @@ def test_entries_to_frame_roundtrip():
         category=DataCategory.MONETARY,
         unit="%",
         frequency=Frequency.DAILY,
-        geo_level=GeoLevel.COUNTRY,
+        geo_level="country",
     )
     df = entries_to_frame([entry])
     assert df.shape == (1, 10)
