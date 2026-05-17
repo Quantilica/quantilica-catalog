@@ -24,7 +24,10 @@ class Frequency(str, Enum):
     WEEKLY = "weekly"
     MONTHLY = "monthly"
     QUARTERLY = "quarterly"
+    SEMI_ANNUAL = "semi_annual"
+    ROLLING_QUARTERLY = "rolling_quarterly"
     YEARLY = "yearly"
+    MULTI_YEAR = "multi_year"
     IRREGULAR = "irregular"
 
 

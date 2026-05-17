@@ -27,6 +27,11 @@ from .dims.relationship import (
     geo_relationship_entries_to_frame,
     relationships_at,
 )
+from .adapters.sidra import (
+    SIDRA_FREQUENCIA_TO_FREQUENCY,
+    SIDRA_RESULT_CONTRACT,
+    sidra_frequencia_to_frequency,
+)
 from .enums import DataCategory, Frequency, GeoSystem, GeoType, RelType
 from .facts.observation import OBSERVATION_CONTRACT
 
@@ -67,4 +72,8 @@ __all__ = [
     "GeoType",
     "RelType",
     "GeoSystem",
+    # SIDRA
+    "SIDRA_RESULT_CONTRACT",
+    "SIDRA_FREQUENCIA_TO_FREQUENCY",
+    "sidra_frequencia_to_frequency",
 ]
