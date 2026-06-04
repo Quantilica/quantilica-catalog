@@ -5,7 +5,7 @@ from datetime import date
 import polars as pl
 import pytest
 
-from quantilica_catalog import (
+from quantilica.catalog import (
     INDICATOR_CONTRACT,
     OBSERVATION_CONTRACT,
     DataCategory,

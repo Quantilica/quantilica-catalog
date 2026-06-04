@@ -21,7 +21,7 @@ Raises ValueError for any row with frequencia == 'nao_reconhecida'.
 from __future__ import annotations
 
 import polars as pl
-from quantilica_io.schema import DataContract, Field
+from quantilica.analytics.schema import DataContract, Field
 
 from ..enums import Frequency
 from ..facts.observation import OBSERVATION_CONTRACT

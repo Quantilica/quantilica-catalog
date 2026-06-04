@@ -5,7 +5,7 @@ from datetime import date
 import polars as pl
 import pytest
 
-from quantilica_catalog import (
+from quantilica.catalog import (
     GEO_CODE_CONTRACT,
     GEO_ENTITY_CONTRACT,
     GEO_RELATIONSHIP_CONTRACT,
@@ -30,7 +30,7 @@ from quantilica_catalog import (
     station_id,
     subdistrict_id,
 )
-from quantilica_catalog.sql.ddl import (
+from quantilica.catalog.sql.ddl import (
     CREATE_ALL_GEO_TABLES,
     CREATE_GEO_CODE,
     CREATE_GEO_ENTITY,

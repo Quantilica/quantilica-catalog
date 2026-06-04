@@ -3,7 +3,7 @@
 Usage in a -db app::
 
     from sqlalchemy import text
-    from quantilica_catalog.sql.ddl import CREATE_ALL_GEO_TABLES
+    from quantilica.catalog.sql.ddl import CREATE_ALL_GEO_TABLES
 
     with engine.connect() as conn:
         conn.execute(text(CREATE_ALL_GEO_TABLES))

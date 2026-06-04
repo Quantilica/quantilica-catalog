@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from datetime import date
 
 import polars as pl
-from quantilica_io.schema import DataContract, Field
+from quantilica.analytics.schema import DataContract, Field
 
 from ..enums import GeoSystem, RelType
 

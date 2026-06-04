@@ -5,7 +5,7 @@ from datetime import date, datetime
 import polars as pl
 import pytest
 
-from quantilica_catalog.adapters import bcb_sgs, inmet, rtn, tesouro_direto
+from quantilica.catalog.adapters import bcb_sgs, inmet, rtn, tesouro_direto
 
 
 # ── BCB-SGS ──────────────────────────────────────────────────────────────────

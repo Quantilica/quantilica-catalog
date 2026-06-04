@@ -5,12 +5,12 @@ from datetime import date
 import polars as pl
 import pytest
 
-from quantilica_catalog.adapters.sidra import (
+from quantilica.catalog.adapters.sidra import (
     SIDRA_FREQUENCIA_TO_FREQUENCY,
     sidra_frequencia_to_frequency,
     to_observations,
 )
-from quantilica_catalog.enums import Frequency
+from quantilica.catalog.enums import Frequency
 
 
 # ── helpers ──────────────────────────────────────────────────────────────────

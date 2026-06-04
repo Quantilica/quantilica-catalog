@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import polars as pl
-from quantilica_io.schema import DataContract, Field
+from quantilica.analytics.schema import DataContract, Field
 
 GEO_CODE_CONTRACT = DataContract(
     dataset_id="catalog-dim-geo-code",

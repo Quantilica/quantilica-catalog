@@ -30,7 +30,7 @@ classifiers = [
 ]
 dependencies = [
     "polars>=1.0.0",
-    "quantilica-io @ git+https://github.com/Quantilica/quantilica-io.git",
+    "quantilica-analytics @ git+https://github.com/Quantilica/quantilica-analytics.git",
 ]
 
 [project.urls]
@@ -50,6 +50,12 @@ addopts = ["-p", "no:cacheprovider"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
+
+[tool.hatch.build]
+sources = ["src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/quantilica/catalog"]
 
 [build-system]
 requires = ["hatchling"]

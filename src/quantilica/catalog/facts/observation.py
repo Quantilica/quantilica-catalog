@@ -13,7 +13,7 @@ reports a range rather than a point in time (e.g. BCB-SGS daily ranges).
 from __future__ import annotations
 
 import polars as pl
-from quantilica_io.schema import DataContract, Field
+from quantilica.analytics.schema import DataContract, Field
 
 OBSERVATION_CONTRACT = DataContract(
     dataset_id="catalog-fact-observation",

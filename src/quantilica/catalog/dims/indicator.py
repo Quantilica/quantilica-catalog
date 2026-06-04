@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import polars as pl
-from quantilica_io.schema import DataContract, Field
+from quantilica.analytics.schema import DataContract, Field
 
 from ..enums import DataCategory, Frequency
 
