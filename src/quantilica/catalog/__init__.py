@@ -1,5 +1,10 @@
 """Unified data catalog and canonical observation model for Quantilica."""
 
+from .adapters.sidra import (
+    SIDRA_FREQUENCIA_TO_FREQUENCY,
+    SIDRA_RESULT_CONTRACT,
+    sidra_frequencia_to_frequency,
+)
 from .dims.code import GEO_CODE_CONTRACT, GeoCodeEntry, geo_code_entries_to_frame
 from .dims.entity import (
     GEO_ENTITY_CONTRACT,
@@ -26,11 +31,6 @@ from .dims.relationship import (
     GeoRelationshipEntry,
     geo_relationship_entries_to_frame,
     relationships_at,
-)
-from .adapters.sidra import (
-    SIDRA_FREQUENCIA_TO_FREQUENCY,
-    SIDRA_RESULT_CONTRACT,
-    sidra_frequencia_to_frequency,
 )
 from .enums import DataCategory, Frequency, GeoSystem, GeoType, RelType
 from .facts.observation import OBSERVATION_CONTRACT
