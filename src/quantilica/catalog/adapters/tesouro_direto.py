@@ -28,6 +28,12 @@ def to_observations(df: pl.DataFrame) -> pl.DataFrame:
         reference_date: Date, bond_type: Utf8, maturity_date: Date,
         buy_yield?: Float64, sell_yield?: Float64, buy_price?: Float64,
         sell_price?: Float64, base_price?: Float64
+
+    Args:
+        df: The input Tesouro Direto DataFrame.
+
+    Returns:
+        A validated Polars DataFrame in the canonical observation format.
     """
     present = [c for c in _PRICE_YIELD_COLS if c in df.columns]
     result = (

@@ -52,21 +52,40 @@ class CatalogIndex:
 
     @property
     def sources_by_id(self) -> dict[str, Source]:
-        """Return sources indexed by id."""
+        """Return sources indexed by id.
+
+        Returns:
+            A dictionary mapping source IDs to Source objects.
+        """
         return {item.id: item for item in self.catalog.sources}
 
     @property
     def datasets_by_id(self) -> dict[str, Dataset]:
-        """Return datasets indexed by id."""
+        """Return datasets indexed by id.
+
+        Returns:
+            A dictionary mapping dataset IDs to Dataset objects.
+        """
         return {item.id: item for item in self.catalog.datasets}
 
     @property
     def resources_by_id(self) -> dict[str, Resource]:
-        """Return resources indexed by id."""
+        """Return resources indexed by id.
+
+        Returns:
+            A dictionary mapping resource IDs to Resource objects.
+        """
         return {item.id: item for item in self.catalog.resources}
 
     def datasets_for_source(self, source_id: str) -> list[Dataset]:
-        """Return datasets belonging to a source."""
+        """Return datasets belonging to a source.
+
+        Args:
+            source_id: The ID of the source.
+
+        Returns:
+            A list of Dataset objects belonging to the source.
+        """
         return [
             dataset
             for dataset in self.catalog.datasets
@@ -74,7 +93,14 @@ class CatalogIndex:
         ]
 
     def resources_for_dataset(self, dataset_id: str) -> list[Resource]:
-        """Return resources belonging to a dataset."""
+        """Return resources belonging to a dataset.
+
+        Args:
+            dataset_id: The ID of the dataset.
+
+        Returns:
+            A list of Resource objects belonging to the dataset.
+        """
         return [
             resource
             for resource in self.catalog.resources
@@ -82,11 +108,25 @@ class CatalogIndex:
         ]
 
     def series_for_dataset(self, dataset_id: str) -> list[Series]:
-        """Return series belonging to a dataset."""
+        """Return series belonging to a dataset.
+
+        Args:
+            dataset_id: The ID of the dataset.
+
+        Returns:
+            A list of Series objects belonging to the dataset.
+        """
         return [item for item in self.catalog.series if item.dataset_id == dataset_id]
 
     def search_datasets(self, query: str) -> list[Dataset]:
-        """Search datasets by id, name, and description."""
+        """Search datasets by id, name, and description.
+
+        Args:
+            query: The search query string.
+
+        Returns:
+            A list of matching Dataset objects.
+        """
         normalized = query.casefold().strip()
         if not normalized:
             return []
@@ -124,27 +164,54 @@ class CatalogRepository:
         *,
         validate: bool = True,
     ) -> ObjectStat:
-        """Publish a metadata catalog JSON artifact."""
+        """Publish a metadata catalog JSON artifact.
+
+        Args:
+            catalog: The MetadataCatalog to publish.
+            validate: Whether to validate the catalog before publishing (default: True).
+
+        Returns:
+            An ObjectStat representing the published object.
+        """
         if validate:
             CatalogIndex(catalog)
         return self.storage.write_text(self.catalog_key, catalog.to_json())
 
     def load_catalog(self) -> MetadataCatalog:
-        """Load the published metadata catalog."""
+        """Load the published metadata catalog.
+
+        Returns:
+            The loaded MetadataCatalog.
+        """
         payload = self._read_json(self.catalog_key)
         return catalog_from_dict(payload)
 
     def load_index(self) -> CatalogIndex:
-        """Load the published metadata catalog as an index."""
+        """Load the published metadata catalog as an index.
+
+        Returns:
+            A CatalogIndex built from the loaded catalog.
+        """
         return CatalogIndex(self.load_catalog())
 
     def write_run(self, run: IngestionRun) -> ObjectStat:
-        """Write an ingestion run metadata artifact."""
+        """Write an ingestion run metadata artifact.
+
+        Args:
+            run: The IngestionRun object to write.
+
+        Returns:
+            An ObjectStat representing the written object.
+        """
         key = f"{self.runs_prefix}/{run.id}.json"
         return self.storage.write_text(key, run.to_json())
 
     def list_runs(self) -> list[IngestionRun]:
-        """Load all ingestion run artifacts."""
+        """Load all ingestion run artifacts.
+
+        Returns:
+            A list of all IngestionRun objects.
+        """
         runs = [
             ingestion_run_from_dict(self._read_json(key))
             for key in self.storage.list(self.runs_prefix)
@@ -158,12 +225,24 @@ class CatalogRepository:
         *,
         key: str | None = None,
     ) -> ObjectStat:
-        """Write a download manifest artifact."""
+        """Write a download manifest artifact.
+
+        Args:
+            manifest: The DownloadManifest object to write.
+            key: Optional custom key to use for the artifact.
+
+        Returns:
+            An ObjectStat representing the written object.
+        """
         target_key = key or self._download_manifest_key(manifest)
         return self.storage.write_text(target_key, manifest.to_json())
 
     def list_download_manifests(self) -> list[DownloadManifest]:
-        """Load all download manifest artifacts."""
+        """Load all download manifest artifacts.
+
+        Returns:
+            A list of all DownloadManifest objects.
+        """
         manifests = [
             download_manifest_from_dict(self._read_json(key))
             for key in self.storage.list(self.manifests_prefix)
@@ -186,7 +265,14 @@ class CatalogRepository:
 
 
 def catalog_from_dict(payload: dict[str, Any]) -> MetadataCatalog:
-    """Build a MetadataCatalog from a dictionary."""
+    """Build a MetadataCatalog from a dictionary.
+
+    Args:
+        payload: The dictionary representation of the catalog.
+
+    Returns:
+        The instantiated MetadataCatalog.
+    """
     return MetadataCatalog(
         sources=[Source(**item) for item in payload.get("sources", [])],
         datasets=[Dataset(**item) for item in payload.get("datasets", [])],
@@ -202,10 +288,24 @@ def catalog_from_dict(payload: dict[str, Any]) -> MetadataCatalog:
 
 
 def ingestion_run_from_dict(payload: dict[str, Any]) -> IngestionRun:
-    """Build an IngestionRun from a dictionary."""
+    """Build an IngestionRun from a dictionary.
+
+    Args:
+        payload: The dictionary representation of the ingestion run.
+
+    Returns:
+        The instantiated IngestionRun.
+    """
     return IngestionRun(**payload)
 
 
 def download_manifest_from_dict(payload: dict[str, Any]) -> DownloadManifest:
-    """Build a DownloadManifest from a dictionary."""
+    """Build a DownloadManifest from a dictionary.
+
+    Args:
+        payload: The dictionary representation of the download manifest.
+
+    Returns:
+        The instantiated DownloadManifest.
+    """
     return DownloadManifest(**payload)

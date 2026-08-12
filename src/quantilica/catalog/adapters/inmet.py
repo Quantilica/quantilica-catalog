@@ -42,6 +42,12 @@ def to_observations(df: pl.DataFrame) -> pl.DataFrame:
 
     Input contract (matches BDMEP_CONTRACT from inmet-fetcher):
         codigo_wmo: Utf8, data_hora: Datetime, *measurement_cols: Float64?
+
+    Args:
+        df: The input INMET BDMEP DataFrame.
+
+    Returns:
+        A validated Polars DataFrame in the canonical observation format.
     """
     present = [c for c in _MEASURE_COLS if c in df.columns]
     result = (

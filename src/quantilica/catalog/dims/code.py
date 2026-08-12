@@ -26,6 +26,11 @@ class GeoCodeEntry:
     code: str
 
     def to_dict(self) -> dict:
+        """Return the entry as a dictionary.
+
+        Returns:
+            A dictionary representation of the entry.
+        """
         return {
             "geo_id": self.geo_id,
             "system": self.system,
@@ -36,7 +41,14 @@ class GeoCodeEntry:
 def geo_code_entries_to_frame(
     entries: list[GeoCodeEntry],
 ) -> pl.DataFrame:
-    """Convert a list of GeoCodeEntry objects to a validated DataFrame."""
+    """Convert a list of GeoCodeEntry objects to a validated DataFrame.
+
+    Args:
+        entries: A list of GeoCodeEntry objects.
+
+    Returns:
+        A validated Polars DataFrame matching GEO_CODE_CONTRACT.
+    """
     schema = {f.name: f.dtype for f in GEO_CODE_CONTRACT.fields}
     if not entries:
         return pl.DataFrame(schema=schema)

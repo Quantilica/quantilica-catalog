@@ -12,6 +12,12 @@ def to_observations(df: pl.DataFrame) -> pl.DataFrame:
 
     Input contract (matches SGS_CONTRACT):
         series_id: Int64, date: Date, value: Float64?, date_end: Date?
+
+    Args:
+        df: The input BCB-SGS DataFrame.
+
+    Returns:
+        A validated Polars DataFrame in the canonical observation format.
     """
     result = (
         df.with_columns(

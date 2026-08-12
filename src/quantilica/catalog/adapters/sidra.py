@@ -56,7 +56,14 @@ _INTERVAL_FREQUENCIAS = {"trimestre_movel", "plurianual"}
 
 
 def sidra_frequencia_to_frequency(freq: str) -> Frequency:
-    """Map a sidra_fetcher.periodos frequency string to a Frequency enum value."""
+    """Map a sidra_fetcher.periodos frequency string to a Frequency enum value.
+
+    Args:
+        freq: The frequency string from sidra_fetcher.
+
+    Returns:
+        The mapped Frequency enum value, or Frequency.IRREGULAR if not found.
+    """
     try:
         return SIDRA_FREQUENCIA_TO_FREQUENCY[freq]
     except KeyError:
@@ -67,7 +74,15 @@ def to_observations(df: pl.DataFrame) -> pl.DataFrame:
     """Convert a SIDRA result DataFrame to the canonical observation format.
 
     Input contract: SIDRA_RESULT_CONTRACT.
-    Raises ValueError for any row with frequencia == 'nao_reconhecida'.
+
+    Args:
+        df: The input SIDRA DataFrame.
+
+    Returns:
+        A validated Polars DataFrame in the canonical observation format.
+
+    Raises:
+        ValueError: If any row has frequencia == 'nao_reconhecida'.
     """
     bad = (df["frequencia"] == "nao_reconhecida").sum()
     if bad > 0:

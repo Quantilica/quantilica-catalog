@@ -35,6 +35,11 @@ class GeoRelationshipEntry:
     valid_to: date | None = None
 
     def to_dict(self) -> dict:
+        """Return the entry as a dictionary.
+
+        Returns:
+            A dictionary representation of the entry.
+        """
         return {
             "from_geo_id": self.from_geo_id,
             "to_geo_id": self.to_geo_id,
@@ -48,7 +53,14 @@ class GeoRelationshipEntry:
 def geo_relationship_entries_to_frame(
     entries: list[GeoRelationshipEntry],
 ) -> pl.DataFrame:
-    """Convert a list of GeoRelationshipEntry objects to a validated DataFrame."""
+    """Convert a list of GeoRelationshipEntry objects to a validated DataFrame.
+
+    Args:
+        entries: A list of GeoRelationshipEntry objects.
+
+    Returns:
+        A validated Polars DataFrame matching GEO_RELATIONSHIP_CONTRACT.
+    """
     schema = {f.name: f.dtype for f in GEO_RELATIONSHIP_CONTRACT.fields}
     if not entries:
         return pl.DataFrame(schema=schema)
@@ -68,6 +80,13 @@ def relationships_at(
     - valid_to   is null or valid_to   >  reference_date
 
     Rows with both dates null are timeless and always included.
+
+    Args:
+        df: The relationships DataFrame to filter.
+        reference_date: The date to filter active relationships for.
+
+    Returns:
+        A filtered Polars DataFrame.
     """
     ref = pl.lit(reference_date)
     return df.filter(

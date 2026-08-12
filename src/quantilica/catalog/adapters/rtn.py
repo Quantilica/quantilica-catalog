@@ -27,6 +27,14 @@ def to_observations(
     Input contract (matches ``build_contract`` from rtn-fetcher):
         year: Int64, month?: Int64, quarter?: Int64,
         account: Utf8, value: Float64?
+
+    Args:
+        df: The input RTN DataFrame.
+        sheet_name: The name of the RTN sheet.
+        period: The frequency period of the data ("monthly", "quarterly", or "yearly").
+
+    Returns:
+        A validated Polars DataFrame in the canonical observation format.
     """
     result = (
         df.with_columns(

@@ -42,6 +42,11 @@ class IndicatorEntry:
     description: str | None = None
 
     def to_dict(self) -> dict:
+        """Return the entry as a dictionary.
+
+        Returns:
+            A dictionary representation of the entry.
+        """
         return {
             "indicator_id": self.indicator_id,
             "source_id": self.source_id,
@@ -59,7 +64,14 @@ class IndicatorEntry:
 
 
 def entries_to_frame(entries: list[IndicatorEntry]) -> pl.DataFrame:
-    """Convert a list of IndicatorEntry objects to a validated DataFrame."""
+    """Convert a list of IndicatorEntry objects to a validated DataFrame.
+
+    Args:
+        entries: A list of IndicatorEntry objects.
+
+    Returns:
+        A validated Polars DataFrame matching INDICATOR_CONTRACT.
+    """
     schema = {f.name: f.dtype for f in INDICATOR_CONTRACT.fields}
     if not entries:
         return pl.DataFrame(schema=schema)

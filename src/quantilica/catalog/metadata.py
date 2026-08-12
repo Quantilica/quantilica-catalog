@@ -17,7 +17,18 @@ RUN_STATUSES = frozenset({"running", "success", "failed", "cancelled"})
 
 
 def validate_id(value: str, *, field_name: str = "id") -> str:
-    """Validate a stable platform identifier."""
+    """Validate a stable platform identifier.
+
+    Args:
+        value: The identifier string to validate.
+        field_name: The name of the field for error reporting.
+
+    Returns:
+        The validated identifier.
+
+    Raises:
+        MetadataError: If the identifier is invalid.
+    """
     if not value or not ID_PATTERN.fullmatch(value):
         raise MetadataError(f"Invalid {field_name}: {value!r}")
     return value
@@ -32,15 +43,33 @@ class MetadataModel:
     """Base class for serializable metadata dataclasses."""
 
     def to_dict(self) -> dict[str, Any]:
-        """Return this metadata object as a dictionary."""
+        """Return this metadata object as a dictionary.
+
+        Returns:
+            A dictionary representation of the metadata object.
+        """
         return asdict(self)
 
     def to_json(self, *, indent: int = 2) -> str:
-        """Serialize this metadata object as JSON."""
+        """Serialize this metadata object as JSON.
+
+        Args:
+            indent: The number of spaces to use for indentation.
+
+        Returns:
+            The JSON string representation.
+        """
         return _json_dumps(self.to_dict(), indent=indent)
 
     def write_json(self, path: str | Path) -> Path:
-        """Write this metadata object to a JSON file."""
+        """Write this metadata object to a JSON file.
+
+        Args:
+            path: The file path to write to.
+
+        Returns:
+            The path to the written file.
+        """
         return write_text_atomic(path, self.to_json())
 
 
@@ -214,7 +243,18 @@ class IngestionRun(MetadataModel):
         resource_ids: list[str] | None = None,
         metadata: dict[str, Any] | None = None,
     ) -> IngestionRun:
-        """Create a running ingestion run."""
+        """Create a running ingestion run.
+
+        Args:
+            id: The unique identifier for this run.
+            source_id: Optional source identifier associated with this run.
+            dataset_id: Optional dataset identifier associated with this run.
+            resource_ids: Optional list of resource identifiers processed in this run.
+            metadata: Optional additional metadata for this run.
+
+        Returns:
+            A new IngestionRun instance with status 'running'.
+        """
         return cls(
             id=id,
             started_at=isoformat_utc(),
@@ -225,7 +265,14 @@ class IngestionRun(MetadataModel):
         )
 
     def finish(self, *, status: str = "success") -> IngestionRun:
-        """Return a finished copy of this ingestion run."""
+        """Return a finished copy of this ingestion run.
+
+        Args:
+            status: The final status of the run, defaults to 'success'.
+
+        Returns:
+            A new IngestionRun instance with the updated status and finished_at timestamp.
+        """
         return IngestionRun(
             id=self.id,
             started_at=self.started_at,
@@ -254,7 +301,11 @@ class MetadataCatalog(MetadataModel):
     metadata: dict[str, Any] = field(default_factory=dict)
 
     def validate_references(self) -> None:
-        """Validate common source/dataset/resource references."""
+        """Validate common source/dataset/resource references.
+
+        Raises:
+            MetadataError: If any reference is invalid or unknown.
+        """
         source_ids = {source.id for source in self.sources}
         dataset_ids = {dataset.id for dataset in self.datasets}
         resource_ids = {resource.id for resource in self.resources}
@@ -294,6 +345,17 @@ def build_simple_catalog(
     Most data clients expose a single source and a single dataset; this helper
     removes the boilerplate of wiring them together and calling
     :meth:`MetadataCatalog.validate_references`.
+
+    Args:
+        source: The source object.
+        dataset: The dataset object.
+        resources: A list of resource objects.
+
+    Returns:
+        A validated MetadataCatalog instance.
+
+    Raises:
+        MetadataError: If the references between source, dataset, and resources are mismatched.
     """
     if dataset.source_id != source.id:
         raise MetadataError(
