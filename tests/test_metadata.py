@@ -1,6 +1,8 @@
 import json
 
 import pytest
+from quantilica.core.exceptions import MetadataError
+
 from quantilica.catalog.metadata import (
     Dataset,
     Dimension,
@@ -15,7 +17,6 @@ from quantilica.catalog.metadata import (
     build_simple_catalog,
     validate_id,
 )
-from quantilica.core.exceptions import MetadataError
 
 
 def test_validate_id_accepts_stable_identifiers():

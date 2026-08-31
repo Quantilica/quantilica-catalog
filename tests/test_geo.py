@@ -37,7 +37,6 @@ from quantilica.catalog.sql.ddl import (
     CREATE_GEO_RELATIONSHIP,
 )
 
-
 # ── GEO_ENTITY_CONTRACT ───────────────────────────────────────────────────────
 
 
@@ -302,86 +301,108 @@ def _make_rel_df(rows: list[dict]) -> pl.DataFrame:
 
 
 def test_relationships_at_timeless():
-    df = _make_rel_df([{
-        "from_geo_id": "BR:M:1",
-        "to_geo_id": "BR:SP",
-        "rel_type": "administrative_parent",
-        "system": "ibge_traditional",
-        "valid_from": None,
-        "valid_to": None,
-    }])
+    df = _make_rel_df(
+        [
+            {
+                "from_geo_id": "BR:M:1",
+                "to_geo_id": "BR:SP",
+                "rel_type": "administrative_parent",
+                "system": "ibge_traditional",
+                "valid_from": None,
+                "valid_to": None,
+            }
+        ]
+    )
     result = relationships_at(df, date(2020, 1, 1))
     assert len(result) == 1
 
 
 def test_relationships_at_within_range():
-    df = _make_rel_df([{
-        "from_geo_id": "BR:M:1",
-        "to_geo_id": "BR:MR:old",
-        "rel_type": "administrative_parent",
-        "system": "ibge_traditional",
-        "valid_from": date(2010, 1, 1),
-        "valid_to": date(2022, 1, 1),
-    }])
+    df = _make_rel_df(
+        [
+            {
+                "from_geo_id": "BR:M:1",
+                "to_geo_id": "BR:MR:old",
+                "rel_type": "administrative_parent",
+                "system": "ibge_traditional",
+                "valid_from": date(2010, 1, 1),
+                "valid_to": date(2022, 1, 1),
+            }
+        ]
+    )
     assert len(relationships_at(df, date(2015, 6, 1))) == 1
 
 
 def test_relationships_at_before_valid_from():
-    df = _make_rel_df([{
-        "from_geo_id": "BR:M:1",
-        "to_geo_id": "BR:MR:new",
-        "rel_type": "administrative_parent",
-        "system": "ibge_traditional",
-        "valid_from": date(2022, 1, 1),
-        "valid_to": None,
-    }])
+    df = _make_rel_df(
+        [
+            {
+                "from_geo_id": "BR:M:1",
+                "to_geo_id": "BR:MR:new",
+                "rel_type": "administrative_parent",
+                "system": "ibge_traditional",
+                "valid_from": date(2022, 1, 1),
+                "valid_to": None,
+            }
+        ]
+    )
     assert len(relationships_at(df, date(2020, 1, 1))) == 0
 
 
 def test_relationships_at_after_valid_to():
-    df = _make_rel_df([{
-        "from_geo_id": "BR:M:1",
-        "to_geo_id": "BR:MR:old",
-        "rel_type": "administrative_parent",
-        "system": "ibge_traditional",
-        "valid_from": None,
-        "valid_to": date(2022, 1, 1),
-    }])
+    df = _make_rel_df(
+        [
+            {
+                "from_geo_id": "BR:M:1",
+                "to_geo_id": "BR:MR:old",
+                "rel_type": "administrative_parent",
+                "system": "ibge_traditional",
+                "valid_from": None,
+                "valid_to": date(2022, 1, 1),
+            }
+        ]
+    )
     assert len(relationships_at(df, date(2022, 1, 1))) == 0
 
 
 def test_relationships_at_on_valid_from_boundary():
-    df = _make_rel_df([{
-        "from_geo_id": "BR:M:1",
-        "to_geo_id": "BR:MR:new",
-        "rel_type": "administrative_parent",
-        "system": "ibge_traditional",
-        "valid_from": date(2022, 1, 1),
-        "valid_to": None,
-    }])
+    df = _make_rel_df(
+        [
+            {
+                "from_geo_id": "BR:M:1",
+                "to_geo_id": "BR:MR:new",
+                "rel_type": "administrative_parent",
+                "system": "ibge_traditional",
+                "valid_from": date(2022, 1, 1),
+                "valid_to": None,
+            }
+        ]
+    )
     assert len(relationships_at(df, date(2022, 1, 1))) == 1
 
 
 def test_relationships_at_selects_correct_version():
     """Two versions of the same relation; only one is active at reference_date."""
-    df = _make_rel_df([
-        {
-            "from_geo_id": "BR:M:1",
-            "to_geo_id": "BR:MR:old",
-            "rel_type": "administrative_parent",
-            "system": "ibge_traditional",
-            "valid_from": None,
-            "valid_to": date(2022, 1, 1),
-        },
-        {
-            "from_geo_id": "BR:M:1",
-            "to_geo_id": "BR:MR:new",
-            "rel_type": "administrative_parent",
-            "system": "ibge_traditional",
-            "valid_from": date(2022, 1, 1),
-            "valid_to": None,
-        },
-    ])
+    df = _make_rel_df(
+        [
+            {
+                "from_geo_id": "BR:M:1",
+                "to_geo_id": "BR:MR:old",
+                "rel_type": "administrative_parent",
+                "system": "ibge_traditional",
+                "valid_from": None,
+                "valid_to": date(2022, 1, 1),
+            },
+            {
+                "from_geo_id": "BR:M:1",
+                "to_geo_id": "BR:MR:new",
+                "rel_type": "administrative_parent",
+                "system": "ibge_traditional",
+                "valid_from": date(2022, 1, 1),
+                "valid_to": None,
+            },
+        ]
+    )
     result_old = relationships_at(df, date(2021, 12, 31))
     result_new = relationships_at(df, date(2022, 6, 1))
     assert result_old["to_geo_id"][0] == "BR:MR:old"

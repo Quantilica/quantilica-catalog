@@ -12,7 +12,6 @@ from quantilica.catalog.adapters.sidra import (
 )
 from quantilica.catalog.enums import Frequency
 
-
 # ── helpers ──────────────────────────────────────────────────────────────────
 
 
@@ -138,9 +137,7 @@ def test_value_null_allowed():
 
 def test_output_columns():
     out = to_observations(_make_df())
-    assert set(out.columns) == {
-        "indicator_id", "date", "geo_id", "value", "date_end"
-    }
+    assert set(out.columns) == {"indicator_id", "date", "geo_id", "value", "date_end"}
 
 
 # ── rejection of nao_reconhecida ─────────────────────────────────────────────
@@ -157,11 +154,17 @@ def test_rejects_nao_reconhecida():
 
 
 def test_rejects_nao_reconhecida_reports_count():
-    df = pl.concat([
-        _make_df(frequencia=["nao_reconhecida"], data_inicio=[None], data_fim=[None]),
-        _make_df(frequencia=["nao_reconhecida"], data_inicio=[None], data_fim=[None]),
-        _make_df(),
-    ])
+    df = pl.concat(
+        [
+            _make_df(
+                frequencia=["nao_reconhecida"], data_inicio=[None], data_fim=[None]
+            ),
+            _make_df(
+                frequencia=["nao_reconhecida"], data_inicio=[None], data_fim=[None]
+            ),
+            _make_df(),
+        ]
+    )
     with pytest.raises(ValueError, match="2 row"):
         to_observations(df)
 
@@ -191,8 +194,13 @@ def test_sidra_frequencia_to_frequency_unknown_falls_back():
 
 def test_sidra_frequencia_map_covers_all_known_values():
     known = {
-        "mensal", "trimestral", "trimestre_movel", "semestral",
-        "anual", "plurianual", "nao_reconhecida",
+        "mensal",
+        "trimestral",
+        "trimestre_movel",
+        "semestral",
+        "anual",
+        "plurianual",
+        "nao_reconhecida",
     }
     assert set(SIDRA_FREQUENCIA_TO_FREQUENCY.keys()) == known
 

@@ -70,9 +70,7 @@ def geo_relationship_entries_to_frame(
     return df
 
 
-def relationships_at(
-    df: pl.DataFrame, reference_date: date
-) -> pl.DataFrame:
+def relationships_at(df: pl.DataFrame, reference_date: date) -> pl.DataFrame:
     """Filter a relationships DataFrame to those active at reference_date.
 
     A row is included when:

@@ -55,9 +55,7 @@ class IndicatorEntry:
             "category": self.category.value,
             "subcategory": self.subcategory,
             "unit": self.unit,
-            "frequency": (
-                self.frequency.value if self.frequency else None
-            ),
+            "frequency": (self.frequency.value if self.frequency else None),
             "geo_level": self.geo_level,
             "description": self.description,
         }

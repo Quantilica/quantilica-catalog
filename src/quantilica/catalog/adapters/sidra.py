@@ -92,35 +92,30 @@ def to_observations(df: pl.DataFrame) -> pl.DataFrame:
             "to_observations()."
         )
 
-    result = (
-        df.with_columns(
-            indicator_id=pl.when(pl.col("categoria_ids").is_null())
-            .then(
-                pl.concat_str(
-                    pl.lit("sidra:"),
-                    pl.col("agregado_id"),
-                    pl.lit(":"),
-                    pl.col("variavel_id"),
-                )
+    result = df.with_columns(
+        indicator_id=pl.when(pl.col("categoria_ids").is_null())
+        .then(
+            pl.concat_str(
+                pl.lit("sidra:"),
+                pl.col("agregado_id"),
+                pl.lit(":"),
+                pl.col("variavel_id"),
             )
-            .otherwise(
-                pl.concat_str(
-                    pl.lit("sidra:"),
-                    pl.col("agregado_id"),
-                    pl.lit(":"),
-                    pl.col("variavel_id"),
-                    pl.lit(":"),
-                    pl.col("categoria_ids"),
-                )
-            ),
-            date=pl.col("data_inicio"),
-            date_end=pl.when(
-                pl.col("frequencia").is_in(list(_INTERVAL_FREQUENCIAS))
-            )
-            .then(pl.col("data_fim"))
-            .otherwise(pl.lit(None).cast(pl.Date)),
         )
-        .select(["indicator_id", "date", "geo_id", "value", "date_end"])
-    )
+        .otherwise(
+            pl.concat_str(
+                pl.lit("sidra:"),
+                pl.col("agregado_id"),
+                pl.lit(":"),
+                pl.col("variavel_id"),
+                pl.lit(":"),
+                pl.col("categoria_ids"),
+            )
+        ),
+        date=pl.col("data_inicio"),
+        date_end=pl.when(pl.col("frequencia").is_in(list(_INTERVAL_FREQUENCIAS)))
+        .then(pl.col("data_fim"))
+        .otherwise(pl.lit(None).cast(pl.Date)),
+    ).select(["indicator_id", "date", "geo_id", "value", "date_end"])
     OBSERVATION_CONTRACT.validate(result)
     return result

@@ -19,15 +19,12 @@ def to_observations(df: pl.DataFrame) -> pl.DataFrame:
     Returns:
         A validated Polars DataFrame in the canonical observation format.
     """
-    result = (
-        df.with_columns(
-            indicator_id=pl.concat_str(
-                pl.lit("bcb-sgs:"),
-                pl.col("series_id").cast(pl.Utf8),
-            ),
-            geo_id=pl.lit(None).cast(pl.Utf8),
-        )
-        .select(["indicator_id", "date", "geo_id", "value", "date_end"])
-    )
+    result = df.with_columns(
+        indicator_id=pl.concat_str(
+            pl.lit("bcb-sgs:"),
+            pl.col("series_id").cast(pl.Utf8),
+        ),
+        geo_id=pl.lit(None).cast(pl.Utf8),
+    ).select(["indicator_id", "date", "geo_id", "value", "date_end"])
     OBSERVATION_CONTRACT.validate(result)
     return result

@@ -1,4 +1,8 @@
 import pytest
+from quantilica.core.exceptions import MetadataError
+from quantilica.core.manifests import DownloadManifest
+from quantilica.core.storage import LocalStorage
+
 from quantilica.catalog.metadata import (
     Dataset,
     IngestionRun,
@@ -13,9 +17,6 @@ from quantilica.catalog.platform import (
     download_manifest_from_dict,
     ingestion_run_from_dict,
 )
-from quantilica.core.exceptions import MetadataError
-from quantilica.core.manifests import DownloadManifest
-from quantilica.core.storage import LocalStorage
 
 
 def sample_catalog() -> MetadataCatalog:

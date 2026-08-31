@@ -37,9 +37,7 @@ def to_observations(df: pl.DataFrame) -> pl.DataFrame:
     """
     present = [c for c in _PRICE_YIELD_COLS if c in df.columns]
     result = (
-        df.select(
-            ["reference_date", "bond_type", "maturity_date", *present]
-        )
+        df.select(["reference_date", "bond_type", "maturity_date", *present])
         .unpivot(
             on=present,
             index=["reference_date", "bond_type", "maturity_date"],

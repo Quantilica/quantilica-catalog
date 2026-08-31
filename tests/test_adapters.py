@@ -7,7 +7,6 @@ import pytest
 
 from quantilica.catalog.adapters import bcb_sgs, inmet, rtn, tesouro_direto
 
-
 # ── BCB-SGS ──────────────────────────────────────────────────────────────────
 
 
@@ -29,9 +28,7 @@ def test_bcb_sgs_indicator_id():
     out = bcb_sgs.to_observations(df)
     assert out["indicator_id"].to_list() == ["bcb-sgs:11", "bcb-sgs:432"]
     assert out["geo_id"].is_null().all()
-    assert set(out.columns) == {
-        "indicator_id", "date", "geo_id", "value", "date_end"
-    }
+    assert set(out.columns) == {"indicator_id", "date", "geo_id", "value", "date_end"}
 
 
 def test_bcb_sgs_date_end_preserved():

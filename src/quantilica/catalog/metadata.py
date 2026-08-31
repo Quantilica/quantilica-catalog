@@ -271,7 +271,8 @@ class IngestionRun(MetadataModel):
             status: The final status of the run, defaults to 'success'.
 
         Returns:
-            A new IngestionRun instance with the updated status and finished_at timestamp.
+            A new IngestionRun instance with the updated status and finished_at
+                timestamp.
         """
         return IngestionRun(
             id=self.id,
@@ -355,7 +356,8 @@ def build_simple_catalog(
         A validated MetadataCatalog instance.
 
     Raises:
-        MetadataError: If the references between source, dataset, and resources are mismatched.
+        MetadataError: If the references between source, dataset, and resources are
+            mismatched.
     """
     if dataset.source_id != source.id:
         raise MetadataError(

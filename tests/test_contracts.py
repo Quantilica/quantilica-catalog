@@ -92,7 +92,6 @@ def test_indicator_contract_valid():
     INDICATOR_CONTRACT.validate(df)
 
 
-
 def test_entries_to_frame_roundtrip():
     entry = IndicatorEntry(
         indicator_id="bcb-sgs:12",

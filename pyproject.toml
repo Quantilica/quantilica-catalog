@@ -44,6 +44,18 @@ dev = [
     "ruff>=0.9.0",
 ]
 
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# Migrar (str, Enum) para StrEnum muda o resultado de str() dos membros —
+# é breaking para consumidores; fica para um major deliberado.
+"src/quantilica/catalog/enums.py" = ["UP042"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = ["-p", "no:cacheprovider"]
