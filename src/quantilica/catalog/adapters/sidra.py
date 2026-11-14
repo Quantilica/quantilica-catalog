@@ -12,7 +12,7 @@ Input contract (SIDRA_RESULT_CONTRACT):
     data_fim:      Date?    — last day of the period; null for standard
                               frequencies (monthly/quarterly/semi-annual/yearly),
                               non-null for rolling-quarterly and multi-year
-    frequencia:    Utf8     — period frequency string from sidra_fetcher.periodos
+    frequencia:    Utf8     — period frequency string from ibge_sidra_fetcher.periodos
     value:         Float64? — observed value
 
 Raises ValueError for any row with frequencia == 'nao_reconhecida'.
@@ -56,10 +56,10 @@ _INTERVAL_FREQUENCIAS = {"trimestre_movel", "plurianual"}
 
 
 def sidra_frequencia_to_frequency(freq: str) -> Frequency:
-    """Map a sidra_fetcher.periodos frequency string to a Frequency enum value.
+    """Map an ibge_sidra_fetcher.periodos frequency string to a Frequency enum value.
 
     Args:
-        freq: The frequency string from sidra_fetcher.
+        freq: The frequency string from ibge_sidra_fetcher.
 
     Returns:
         The mapped Frequency enum value, or Frequency.IRREGULAR if not found.
