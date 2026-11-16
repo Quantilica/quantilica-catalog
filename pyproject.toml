@@ -56,6 +56,9 @@ select = ["E", "F", "I", "UP", "B"]
 # é breaking para consumidores; fica para um major deliberado.
 "src/quantilica/catalog/enums.py" = ["UP042"]
 
+[tool.uv]
+required-version = ">=0.9"
+
 # Índices: o uv procura em ordem e para no primeiro que tem o pacote
 # (index-strategy padrão first-index). O PyPI vem antes, então o índice
 # Quantilica (GitHub Pages, que responde 503 intermitente a pacote que não
